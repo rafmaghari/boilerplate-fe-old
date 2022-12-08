@@ -1,4 +1,4 @@
-import HttpService from '../../services/http.service'
+import HttpClientService from '../../services/http-client.service'
 import authService from '../../services/auth.service'
 
 export interface IRegisterValues {
@@ -14,7 +14,7 @@ export interface ILoginValues {
 }
 
 const register = async (userData: IRegisterValues) => {
-    const { data } = await HttpService.post('auth/register', userData)
+    const { data } = await HttpClientService.post('auth/register', userData)
 
     if (data) {
         authService.saveToken(data.access_token)
@@ -24,12 +24,12 @@ const register = async (userData: IRegisterValues) => {
 }
 
 const logout = async () => {
-    await HttpService.post('auth/logout', [])
+    await HttpClientService.post('auth/logout', [])
     authService.removeToken()
 }
 
 const login = async (userData: ILoginValues) => {
-    const { data } = await HttpService.post('auth/login', userData)
+    const { data } = await HttpClientService.post('auth/login', userData)
 
     if (data) {
         authService.saveToken(data.access_token)
@@ -39,8 +39,16 @@ const login = async (userData: ILoginValues) => {
 }
 
 const me = async () => {
-    const { data } = await HttpService.get('me')
-    return data
+    if (typeof window === "undefined") {
+        console.log('wer on the serverfff')
+    } else {
+        console.log('clientfff')
+    }
+    try {
+      await HttpClientService.get('me')
+    } catch (e) {
+        console.log(e, 'error')
+    }
 }
 
 const authAction = {

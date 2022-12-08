@@ -1,9 +1,12 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { UnauthorizedError } from '../utils/Error'
-import authService from './auth.service'
+import Cookies from "js-cookie";
 
-class HttpService {
-    private static api = () => {
+
+class HttpClientService {
+    token: string = '';
+
+    protected static api = (token?: string) => {
         const api = axios.create({
             baseURL: process.env.NEXT_PUBLIC_API_URL,
         })
@@ -11,7 +14,6 @@ class HttpService {
         api.interceptors.response.use(
             (response: AxiosResponse) => response,
             (error) => {
-                console.log(error)
                 if (error.response.status === 401) {
                     if (typeof window === 'undefined') {
                         throw new UnauthorizedError('Unauthorized') //Throw custom error here
@@ -24,11 +26,16 @@ class HttpService {
             }
         )
 
-        api.interceptors.request.use((config: any) => {
-            const token = '9|Un19wQIOZ1CmrZX9nghC74EpWPZ5ZRuz5TKCtQA6'
-            config.headers['Authorization'] = `Bearer ${token}`
-            return config
-        })
+        api.interceptors.request.use((config:AxiosRequestConfig) => {
+            if (!token) {
+                 token = Cookies.get("token");
+            }
+            if (token && token != "" && config.headers) {
+                config.headers["Authorization"] = `Bearer ${token}`;
+            }
+            return config;
+        });
+
 
         return api
     }
@@ -49,4 +56,4 @@ class HttpService {
     }
 }
 
-export default HttpService
+export default HttpClientService

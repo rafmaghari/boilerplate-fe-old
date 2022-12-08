@@ -1,24 +1,31 @@
-import React, { useEffect } from 'react'
+import React  from 'react'
 import { IUser } from '../../types/User'
-import { RootState, useAppDispatch } from '../../app/store'
-import { useSelector } from 'react-redux'
-import authAction from '../../features/auth/authAction'
-import { UnauthorizedError } from '../../utils/Error'
+import AdminHttpService from "../../services/http-server.service";
+import {Layout} from "../../components/Layout/Guest";
+import AuthLayout from "../../components/Layout/Auth";
+import {UnauthorizedError} from "../../utils/Error";
 
-const Me = (data: any): JSX.Element => {
-    console.log(data)
+
+export const getServerSideProps = async (context: any) => {
+    const {data} = await AdminHttpService.getServer('me', context.req.cookies.token)
+    const user = data.data
+    return {
+        props: { user }, // will be passed to the page component as props
+    }
+}
+
+interface IProps {
+    user: IUser
+}
+
+const Me = ({user}: IProps): JSX.Element => {
     return (
-        <div>
-            <h1>Me</h1>
-        </div>
+        <AuthLayout pageTitle="My Profile" >
+            <h1>{user.name}</h1>
+            <h1>{user.email}</h1>
+        </AuthLayout>
     )
 }
 
-export async function getServerSideProps() {
-    const data = await authAction.me()
-    return {
-        props: { data }, // will be passed to the page component as props
-    }
-}
 
 export default Me

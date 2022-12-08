@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { ILoginValues } from '../../features/auth/authAction'
 import { login, reset } from '../../features/auth/authSlice'
 
-import { Layout } from '../../components/Layout'
+import { Layout } from '../../components/Layout/Guest'
 import AuthSideContent from '../../components/Common/Auth/AuthSideContent'
 import AuthResponsiveContent from '../../components/Common/Auth/AuthResponsiveContent'
 import Spinning from '../../components/Common/Loading/Spinning'
