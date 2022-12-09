@@ -8,8 +8,13 @@ interface IFormInput {
     value?: string
     name: string
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    disabled?: boolean,
+}
+const defaultProps = {
+    disabled: false,
 }
 const FormInput = (props: IFormInput) => {
+    props = {...defaultProps, ...props}
     return (
         <div className="FormInput">
             {/* Label */}
@@ -24,10 +29,12 @@ const FormInput = (props: IFormInput) => {
             <input
                 className={`mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm ${
                     props.hasError && 'border-red-400'
-                }`}
+                } ${props.disabled && 'bg-gray-100'}` }
                 name={props.name}
                 type={props.type}
                 onChange={props.onChange}
+                value={props.value}
+                disabled={props.disabled}
             />
 
             {/* Errors */}

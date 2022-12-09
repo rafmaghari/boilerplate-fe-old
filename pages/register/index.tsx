@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 import { Layout } from '../../components/Layout/Guest'
-import { RootState, useAppDispatch } from '../../app/store'
+import { RootState, useAppDispatch } from '../../store/store'
 
 import { register, reset } from '../../features/auth/authSlice'
 import { IRegisterValues } from '../../features/auth/authAction'
@@ -14,6 +14,7 @@ import FormInput from '../../components/Common/Form/Input'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
 import Spinning from '../../components/Common/Loading/Spinning'
+import ButtonWithLoading from "../../components/Common/Form/ButtonWithLoading";
 
 const Register = (): JSX.Element => {
     const [form, setForm] = useState({
@@ -61,7 +62,7 @@ const Register = (): JSX.Element => {
     }
     return (
         <Layout pageTitle="Register">
-            <section className="bg-white">
+            <section className="bg-gray-50">
                 <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
                     <AuthSideContent />
                     <main
@@ -122,10 +123,7 @@ const Register = (): JSX.Element => {
                                 </div>
 
                                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                                    <button className="flex inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                                        {isLoading && <Spinning />} Create An
-                                        Account
-                                    </button>
+                                    <ButtonWithLoading label="Create an Account" isLoading={isLoading} />
 
                                     <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                                         Already have an account?

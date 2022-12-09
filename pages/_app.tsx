@@ -1,7 +1,7 @@
 import { AppType } from 'next/dist/shared/lib/utils'
 import '../styles/globals.css'
 
-import { store } from '../app/store'
+import { store } from '../store/store'
 import { Provider } from 'react-redux'
 import {RouteGuard} from "../components/Common/Auth/RouteGuard";
 

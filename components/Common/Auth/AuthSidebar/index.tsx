@@ -1,36 +1,24 @@
 import React from 'react';
 import AuthSideBarItem from "./AuthSideBarItem";
+import SearchInput from "./SearchInput";
 
 const AuthSidebar = () => {
     const title = `${process.env.NEXT_PUBLIC_APP_NAME} - Admin`
     return (
-        <div className="px-4 py-2 bg-gray-200 bg-indigo-600 lg:w-1/4">
+        <div className="px-4 py-2 bg-gray-200 bg-blue-600 lg:w-1/4">
             <svg xmlns="http://www.w3.org/2000/svg" className="inline w-8 h-8 text-white lg:hidden" fill="none"
                  viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
             <div className="hidden lg:block">
                 <div className="my-2 mb-6">
-                    <h1 className="text-2xl font-bold text-white">{title}</h1>
+                    <h1 className="text-2xl font-bold text-white text-center">{title}</h1>
                 </div>
                 <ul>
                     <li className="mb-6">
-                        <div className="relative">
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-2">
-                                    <button type="submit" className="p-1 focus:outline-none">
-                                        <svg fill="none" stroke="currentColor" strokeLinecap="round"
-                                             strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24"
-                                             className="w-4 h-4 text-black">
-                                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                        </svg>
-                                    </button>
-                                </span>
-                            <input type="search" name="search"
-                                   className="w-full px-4 py-2 pl-12 rounded shadow outline-none text-black"
-                                   placeholder="Search..." />
-                        </div>
+                        <SearchInput />
                     </li>
-                    <li className="mb-2 rounded hover:shadow hover:bg-gray-800">
+                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
                         <AuthSideBarItem label="Home" route="home">
                             <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,7 +27,7 @@ const AuthSidebar = () => {
                             </svg>
                         </AuthSideBarItem>
                     </li>
-                    <li className="mb-2 bg-gray-800 rounded shadow">
+                    <li className="mb-2 bg-blue-500 rounded shadow">
                         <AuthSideBarItem label="Blogs" route="/blogs" >
                             <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
                                  viewBox="0 0 20 20" fill="currentColor">
@@ -49,7 +37,7 @@ const AuthSidebar = () => {
                             </svg>
                         </AuthSideBarItem>
                     </li>
-                    <li className="mb-2 rounded hover:shadow hover:bg-gray-800">
+                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
                         <AuthSideBarItem label="Reports" route="/reports" >
                             <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
                                  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -58,7 +46,7 @@ const AuthSidebar = () => {
                             </svg>
                         </AuthSideBarItem>
                     </li>
-                    <li className="mb-2 rounded hover:shadow hover:bg-gray-800">
+                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
                         <AuthSideBarItem label="Inbox" route="/inbox" >
                             <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
                                  fill="none" viewBox="0 0 24 24" stroke="currentColor">

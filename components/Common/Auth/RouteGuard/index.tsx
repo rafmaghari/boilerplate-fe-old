@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import {useSelector} from "react-redux";
-import {RootState} from "../../../../app/store";
+import {RootState} from "../../../../store/store";
 import {IUser} from "../../../../types/User";
 
 export { RouteGuard };

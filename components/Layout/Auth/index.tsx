@@ -16,7 +16,8 @@ const AuthLayout = ({pageTitle, children}: IProps) => {
             </Head>
             <div className="flex h-screen">
                 <AuthSidebar />
-                <div className="w-full px-4 py-2 bg-gray-200 lg:w-full">
+                <div className="w-full px-4 py-2 bg-gray-50 lg:w-full">
+                    <h1 className="text-5xl my-3">{pageTitle}</h1>
                     <div className="container mx-auto mt-12 text-gray-900">
                         {children}
                     </div>

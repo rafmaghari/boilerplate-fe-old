@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { RootState, useAppDispatch } from '../../app/store'
+import { RootState, useAppDispatch } from '../../store/store'
 import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import Link from 'next/link'
@@ -13,6 +13,7 @@ import AuthSideContent from '../../components/Common/Auth/AuthSideContent'
 import AuthResponsiveContent from '../../components/Common/Auth/AuthResponsiveContent'
 import Spinning from '../../components/Common/Loading/Spinning'
 import FormInput from '../../components/Common/Form/Input'
+import ButtonWithLoading from "../../components/Common/Form/ButtonWithLoading";
 
 const Login = (): JSX.Element => {
     const [form, setForm] = useState({
@@ -56,7 +57,7 @@ const Login = (): JSX.Element => {
     }
     return (
         <Layout pageTitle="Login">
-            <section className="bg-white">
+            <section className="bg-gray-50">
                 <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
                     <AuthSideContent />
                     <main
@@ -94,9 +95,7 @@ const Login = (): JSX.Element => {
                                 </div>
 
                                 <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                                    <button className="flex inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                                        {isLoading && <Spinning />} Login
-                                    </button>
+                                    <ButtonWithLoading label="Login" isLoading={isLoading} />
 
                                     <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                                         Don't have an account yet?
