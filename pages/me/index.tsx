@@ -20,19 +20,20 @@ interface IProps {
 }
 
 const Me = ({user}: IProps): JSX.Element => {
-    const {data:session} = useSession();
+    const { data: session, status } = useSession()
+
     const [form, setForm] = useState({
         name: '',
-        email: ''
+        email: '',
     })
 
     const {name,email} = form
 
     useEffect(() => {
-        if (user) {
-            setForm({ ...form, email: user.email, name: user.name })
+        if (status !== 'loading') {
+            setForm({ ...form, email: session?.user?.email as string, name: session?.user?.name as string })
         }
-    },[])
+    },[session])
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value })

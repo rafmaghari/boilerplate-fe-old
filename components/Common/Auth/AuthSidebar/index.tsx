@@ -19,7 +19,7 @@ const AuthSidebar = () => {
                         <SearchInput />
                     </li>
                     <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
-                        <AuthSideBarItem label="Home" route="home">
+                        <AuthSideBarItem label="Home" route="/">
                             <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -28,31 +28,13 @@ const AuthSidebar = () => {
                         </AuthSideBarItem>
                     </li>
                     <li className="mb-2 bg-blue-500 rounded shadow">
-                        <AuthSideBarItem label="Blogs" route="/blogs" >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
-                                 viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd"
-                                      d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
-                                      clipRule="evenodd"/>
+                        <AuthSideBarItem label="Profile" route="/me" >
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
+                                 stroke="currentColor" className="inline-block w-6 h-6 mr-2 -mt-2">
+                                <path strokeLinecap="round" strokeLinejoin="round"
+                                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
                             </svg>
-                        </AuthSideBarItem>
-                    </li>
-                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
-                        <AuthSideBarItem label="Reports" route="/reports" >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
-                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                      d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                            </svg>
-                        </AuthSideBarItem>
-                    </li>
-                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
-                        <AuthSideBarItem label="Inbox" route="/inbox" >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
-                                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
+
                         </AuthSideBarItem>
                     </li>
                 </ul>
