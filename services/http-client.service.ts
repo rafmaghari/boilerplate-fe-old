@@ -18,7 +18,7 @@ class HttpClientService {
                     if (typeof window === 'undefined') {
                         throw new UnauthorizedError('Unauthorized') //Throw custom error here
                     } else {
-                        window.location.href = '/login'
+                        console.log('errro')
                     }
                     return Promise.reject()
                 }

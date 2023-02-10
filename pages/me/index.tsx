@@ -4,11 +4,12 @@ import AdminHttpService from "../../services/http-server.service";
 import AuthLayout from "../../components/Layout/Auth";
 import FormInput from "../../components/Common/Form/Input";
 import ButtonWithLoading from "../../components/Common/Form/ButtonWithLoading";
+import {useSession} from "next-auth/react";
 
 
 export const getServerSideProps = async (context: any) => {
-    const {data} = await AdminHttpService.getServer('me', context.req.cookies.token)
-    const user = data.data
+    // const {data} = await AdminHttpService.getServer('me', context.req.cookies.token)
+    const user = null
     return {
         props: { user },
     }
@@ -19,6 +20,7 @@ interface IProps {
 }
 
 const Me = ({user}: IProps): JSX.Element => {
+    const {data:session} = useSession();
     const [form, setForm] = useState({
         name: '',
         email: ''
@@ -27,7 +29,9 @@ const Me = ({user}: IProps): JSX.Element => {
     const {name,email} = form
 
     useEffect(() => {
-        setForm({ ...form, email: user.email, name: user.name })
+        if (user) {
+            setForm({ ...form, email: user.email, name: user.name })
+        }
     },[])
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {

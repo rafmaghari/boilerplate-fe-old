@@ -1,59 +1,57 @@
-import React, { useEffect, useState } from 'react'
-import { RootState, useAppDispatch } from '../../store/store'
-import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux'
+import React, {useState} from 'react'
 import Link from 'next/link'
-import { toast } from 'react-toastify'
 
-import { ILoginValues } from '../../features/auth/authAction'
-import { login, reset } from '../../features/auth/authSlice'
-
-import { Layout } from '../../components/Layout/Guest'
+import {Layout} from '../../components/Layout/Guest'
 import AuthSideContent from '../../components/Common/Auth/AuthSideContent'
 import AuthResponsiveContent from '../../components/Common/Auth/AuthResponsiveContent'
-import Spinning from '../../components/Common/Loading/Spinning'
 import FormInput from '../../components/Common/Form/Input'
 import ButtonWithLoading from "../../components/Common/Form/ButtonWithLoading";
+import {signIn} from "next-auth/react";
+import {NextAuthError} from "../../types/NextAuthError";
+import {toast} from "react-toastify";
+import {useRouter} from "next/router";
 
 const Login = (): JSX.Element => {
     const [form, setForm] = useState({
         email: '',
         password: '',
     })
-
-    const { email, password } = form
-    const dispatch = useAppDispatch()
     const router = useRouter()
-    const { isError, message, isSuccess, errors, isLoading } = useSelector(
-        (state: RootState) => state.auth
-    )
 
-    useEffect(() => {
-        if (isError) {
-            toast(message, { type: 'error' })
-        }
-
-        if (isSuccess) {
-            router.push('/me')
-        }
-
-        router.events.on('routeChangeStart', (url, { shallow }) => {
-            dispatch(reset())
-        })
-    }, [isError, isSuccess, message, errors])
+    const [isError, setIsError] = useState(false)
+    const [errors, setErrors] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
+    const { email, password } = form
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const userData: ILoginValues = {
-            email,
-            password,
-        }
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+       e.preventDefault()
+       setIsLoading(true)
+       setErrors('')
+       setIsError(false)
 
-        dispatch(login(userData))
+       const res =  await signIn('credentials', {
+            email: email,
+            password: password,
+            redirect: false
+        })
+
+        const {error, ok} = res as NextAuthError;
+        if (ok) {
+            await router.push('/me')
+        } else {
+            const parsedError = JSON.parse(error)
+            if (!parsedError.errors) {
+                toast('Invalid Credentials', { type: 'error' })
+            } else {
+                setErrors(parsedError.errors)
+            }
+            setIsError(true)
+        }
+        setIsLoading(false)
     }
     return (
         <Layout pageTitle="Login">

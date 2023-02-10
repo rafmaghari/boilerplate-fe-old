@@ -1,7 +1,15 @@
-// middleware.ts
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { withAuth } from "next-auth/middleware"
+import { NextResponse } from "next/server"
 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-}
+export default withAuth(
+    function middleware(req) {
+        return NextResponse.rewrite(req.url)
+    },
+    {
+        callbacks: {
+            authorized: ({ token }) => token !== null,
+        },
+    }
+)
+
+export const config = { matcher: ["/me"] }

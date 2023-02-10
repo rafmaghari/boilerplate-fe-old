@@ -4,14 +4,16 @@ import '../styles/globals.css'
 import { store } from '../store/store'
 import { Provider } from 'react-redux'
 import {RouteGuard} from "../components/Common/Auth/RouteGuard";
+import {SessionProvider} from "next-auth/react";
+import {AppProps} from "next/app";
 
-const MyApp: AppType = ({ Component, pageProps }) => {
+const MyApp: AppType = ({ Component, pageProps }: AppProps) => {
     return (
-        <Provider store={store}>
-            <RouteGuard>
+        <SessionProvider session={pageProps.session}>
+            <Provider store={store}>
                 <Component {...pageProps} />
-            </RouteGuard>
-        </Provider>
+            </Provider>
+        </SessionProvider>
     )
 }
 
