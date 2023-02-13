@@ -4,6 +4,7 @@ import apiInstance from "../../../services/api.instance";
 import httpClientService from "../../../services/http-client.service";
 import {log} from "util";
 
+
 export default NextAuth({
     providers: [
         CredentialProvider({
@@ -42,6 +43,7 @@ export default NextAuth({
         async jwt({ token, user }) {
             return { ...token, ...user }
         },
+        // @ts-ignore
         async session({session, token}) {
             return token
         }

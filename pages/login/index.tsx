@@ -41,7 +41,7 @@ const Login = (): JSX.Element => {
 
         const {error, ok} = res as NextAuthError;
         if (ok) {
-            await router.push('/me')
+            await router.push('/home')
         } else {
             const parsedError = JSON.parse(error)
             if (!parsedError.errors) {
