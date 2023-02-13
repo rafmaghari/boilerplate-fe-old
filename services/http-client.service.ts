@@ -17,8 +17,6 @@ class HttpClientService {
                 if (error.response.status === 401) {
                     if (typeof window === 'undefined') {
                         throw new UnauthorizedError('Unauthorized') //Throw custom error here
-                    } else {
-                        console.log('errro')
                     }
                     return Promise.reject()
                 }
