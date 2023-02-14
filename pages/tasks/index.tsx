@@ -9,6 +9,7 @@ import Button from "../../components/Common/Form/Button";
 export const getServerSideProps = async ({req}: any) => {
     const session = await getSession({req}) as any;
     const {data} = await HttpServerService.getServer('tasks', session.access_token)
+    console.log(data)
     const tasks = data.data;
 
     return {
@@ -68,8 +69,18 @@ const Task = ({tasks}: IProps): JSX.Element => {
             nextPage,
             // @ts-ignore
             previousPage,
+            // @ts-ignore
+            canNextPage,
+            // @ts-ignore
+            canPreviousPage,
+            // @ts-ignore
+            pageOptions,
+            state,
             prepareRow
         } = useTable({columns, data}, usePagination)
+
+        // @ts-ignore
+        const { pageIndex } = state
 
         return (
             <div>
@@ -106,8 +117,18 @@ const Task = ({tasks}: IProps): JSX.Element => {
                     </tbody>
                 </table>
                 <div className="flex space-x-1 my-5 justify-end mx-10">
-                    <Button label="Previous" size="px-5 py-2" variant="blue" onClick={() => previousPage()} />
-                    <Button label="Next" size="px-5 py-2" variant="blue" onClick={() => nextPage()} />
+                    {canPreviousPage && (
+                        <Button label="Previous" size="px-5 py-2" variant="blue" onClick={() => previousPage()} />
+                    )}
+                    <span>
+                        Page {' '}
+                        <strong>
+                            {pageIndex + 1} of {pageOptions.length}
+                        </strong> {' '}
+                    </span>
+                    {canNextPage && (
+                        <Button label="Next" size="px-5 py-2" variant="blue" onClick={() => nextPage()}  />
+                    )}
                 </div>
             </div>
 
