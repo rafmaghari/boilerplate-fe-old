@@ -27,7 +27,6 @@ export default NextAuth({
                         'email': email,
                         'password': password
                     })
-                    console.log(data, 'data')
                     return data
                 } catch (e: any) {
                     throw new Error( JSON.stringify({ errors: e.response.data.errors, status: false }))

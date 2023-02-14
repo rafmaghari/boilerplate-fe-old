@@ -13,7 +13,6 @@ import AuthResponsiveContent from '../../components/Common/Auth/AuthResponsiveCo
 import FormInput from '../../components/Common/Form/Input'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
-import Spinning from '../../components/Common/Loading/Spinning'
 import ButtonWithLoading from "../../components/Common/Form/ButtonWithLoading";
 
 const Register = (): JSX.Element => {

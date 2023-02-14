@@ -12,4 +12,5 @@ export default withAuth(
     }
 )
 
+
 export const config = { matcher: ["/me", "/home", "/tasks"] }
