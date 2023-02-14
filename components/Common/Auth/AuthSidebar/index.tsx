@@ -7,7 +7,7 @@ import {log} from "util";
 const AuthSidebar = () => {
     const title = `${process.env.NEXT_PUBLIC_APP_NAME} - Admin`
     return (
-        <div className="px-4 py-2 bg-gray-200 bg-blue-600 lg:w-1/4">
+        <div className="px-4 py-2 bg-gray-200 bg-gray-800 lg:w-1/4">
             <svg xmlns="http://www.w3.org/2000/svg" className="inline w-8 h-8 text-white lg:hidden" fill="none"
                  viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -21,7 +21,7 @@ const AuthSidebar = () => {
                         <SearchInput />
                     </li>
 
-                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
+                    <li className="mb-2 rounded hover:shadow hover:bg-gray-600">
                         <AuthSideBarItem label="Home" route="/home">
                             <svg xmlns="http://www.w3.org/2000/svg" className="inline-block w-6 h-6 mr-2 -mt-2"
                                      fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,7 +31,7 @@ const AuthSidebar = () => {
                         </AuthSideBarItem>
                     </li>
 
-                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
+                    <li className="mb-2 rounded hover:shadow hover:bg-gray-600">
                         <AuthSideBarItem label="Profile" route="/me" >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                                  stroke="currentColor" className="inline-block w-6 h-6 mr-2 -mt-2">
@@ -42,7 +42,7 @@ const AuthSidebar = () => {
                         </AuthSideBarItem>
                     </li>
 
-                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
+                    <li className="mb-2 rounded hover:shadow hover:bg-gray-600">
                         <AuthSideBarItem label="Tasks" route="/tasks" >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
                                  stroke="currentColor" className="inline-block w-6 h-6 mr-2 -mt-2">
@@ -53,7 +53,7 @@ const AuthSidebar = () => {
                         </AuthSideBarItem>
                     </li>
 
-                    <li className="mb-2 rounded hover:shadow hover:bg-blue-800">
+                    <li className="mb-2 rounded hover:shadow hover:bg-gray-600">
                         <AuthSideBarItem label="">
                             <button onClick={() => signOut()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5"
