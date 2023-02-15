@@ -1,30 +1,38 @@
-import React, {useMemo} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import AuthLayout from "../../components/Layout/Auth";
 import {getSession} from "next-auth/react";
 import HttpServerService from "../../services/http-server.service";
-import {ITask} from "../../types/Task";
 import {usePagination, useTable} from 'react-table'
 import Button from "../../components/Common/Form/Button";
+import button from "../../components/Common/Form/Button";
+import {h} from "preact";
 
-export const getServerSideProps = async ({req}: any) => {
-    const session = await getSession({req}) as any;
-    const {data} = await HttpServerService.getServer('tasks', session.access_token)
-    console.log(data)
-    const tasks = data.data;
 
-    return {
-        props: { tasks },
-    }
-}
 
-interface IProps {
-    tasks: ITask[]
-}
+const Task = (): JSX.Element => {
+    const [tasks, setTasks] = useState([]);
+    const [pageLinks, setPageLinks] = useState([])
+    const [loading, setLoading] = useState(false)
 
-const Task = ({tasks}: IProps): JSX.Element => {
+    const fetchTask = useCallback(async (page: number) => {
+        setLoading(true)
+        const session = await getSession() as any;
+        const {data} = await HttpServerService.getServer(`tasks?per_page=5&page=${page}`, session.access_token)
+        setTasks(data.data)
+        setPageLinks(data.meta.links)
+        setLoading(false)
+    }, [])
+
+    useEffect( () => {
+        fetchTask(1).catch(e => console.log(e))
+    }, []);
 
     const columns = React.useMemo(
         () => [
+            {
+                Header: 'ID',
+                accessor: 'id'
+            },
             {
                 Header: 'Name',
                 accessor: 'name',
@@ -117,18 +125,11 @@ const Task = ({tasks}: IProps): JSX.Element => {
                     </tbody>
                 </table>
                 <div className="flex space-x-1 my-5 justify-end mx-10">
-                    {canPreviousPage && (
-                        <Button label="Previous" size="px-5 py-2" variant="blue" onClick={() => previousPage()} />
-                    )}
-                    <span>
-                        Page {' '}
-                        <strong>
-                            {pageIndex + 1} of {pageOptions.length}
-                        </strong> {' '}
-                    </span>
-                    {canNextPage && (
-                        <Button label="Next" size="px-5 py-2" variant="blue" onClick={() => nextPage()}  />
-                    )}
+                    {pageLinks && pageLinks.map((page: any, key) => {
+                        return <button onClick={() => fetchTask(page.label)} className="bg-gray-500 text-gray-100 px-2 py-1 rounded" key={key}>
+                           {page.label}
+                        </button>
+                    })}
                 </div>
             </div>
 
@@ -136,7 +137,9 @@ const Task = ({tasks}: IProps): JSX.Element => {
     }
     return (
         <AuthLayout pageTitle="Tasks" >
-            <Table columns={columns} data={tasks} />
+            {loading ? <h1> Loading.... </h1>
+                : <Table columns={columns} data={tasks} />
+            }
         </AuthLayout>
     );
 };

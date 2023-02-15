@@ -3,7 +3,6 @@ import '../styles/globals.css'
 
 import { store } from '../store/store'
 import { Provider } from 'react-redux'
-import {RouteGuard} from "../components/Common/Auth/RouteGuard";
 import {SessionProvider} from "next-auth/react";
 import {AppProps} from "next/app";
 
