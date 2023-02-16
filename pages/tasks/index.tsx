@@ -5,9 +5,7 @@ import HttpServerService from "../../services/http-server.service";
 import {usePagination, useTable} from 'react-table'
 import Button from "../../components/Common/Form/Button";
 import button from "../../components/Common/Form/Button";
-import {h} from "preact";
-
-
+import Spinning from "../../components/Common/Loading/Spinning";
 
 const Task = (): JSX.Element => {
     const [tasks, setTasks] = useState([]);
@@ -56,8 +54,8 @@ const Task = (): JSX.Element => {
                     const { row: index } = tableInstance;
                     return (
                         <div className="flex space-x-1">
-                            <Button label="Edit" size="px-5 py-2" variant="blue" onClick={() => alert('edit')} />
-                            <Button label="Delete" size="px-5 py-2" variant="red" onClick={() => alert('delete')} />
+                            <Button label="Edit" size="px-5 py-2" variant="primary" onClick={() => alert('edit')} />
+                            <Button label="Delete" size="px-5 py-2" variant="danger" onClick={() => alert('delete')} />
                         </div>
                 )
                 }
@@ -124,10 +122,10 @@ const Task = (): JSX.Element => {
                     })}
                     </tbody>
                 </table>
-                <div className="flex space-x-1 my-5 justify-end mx-10">
+                <div className="flex space-x-1 my-5 justify-end">
                     {pageLinks && pageLinks.map((page: any, key) => {
-                        return <button onClick={() => fetchTask(page.label)} className="bg-gray-500 text-gray-100 px-2 py-1 rounded" key={key}>
-                           {page.label}
+                        return <button onClick={() => fetchTask(page.label)} className="bg-blue-500 text-blue-100 px-2 py-1 rounded" key={key}>
+                            <>{page.label}</>
                         </button>
                     })}
                 </div>
@@ -137,8 +135,15 @@ const Task = (): JSX.Element => {
     }
     return (
         <AuthLayout pageTitle="Tasks" >
-            {loading ? <h1> Loading.... </h1>
-                : <Table columns={columns} data={tasks} />
+            {loading ? <div className="flex justify-center content-center"><Spinning size="w-24 h-24 mt-32" /></div>
+                : (
+                    <>
+                        <div className="my-1 flex justify-end">
+                            <Button label="Create Task" variant="primary" onClick={() => alert('creating a task')}/>
+                        </div>
+                        <Table columns={columns} data={tasks}/>
+                    </>
+                )
             }
         </AuthLayout>
     );
