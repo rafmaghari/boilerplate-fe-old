@@ -6,6 +6,7 @@ import {usePagination, useTable} from 'react-table'
 import Button from "../../components/Common/Form/Button";
 import button from "../../components/Common/Form/Button";
 import Spinning from "../../components/Common/Loading/Spinning";
+import TaskModal from "../../components/Common/Modules/Modals/TaskModal";
 
 const Task = (): JSX.Element => {
     const [tasks, setTasks] = useState([]);
@@ -15,7 +16,7 @@ const Task = (): JSX.Element => {
     const fetchTask = useCallback(async (page: number) => {
         setLoading(true)
         const session = await getSession() as any;
-        const {data} = await HttpServerService.getServer(`tasks?per_page=5&page=${page}`, session.access_token)
+        const {data} = await HttpServerService.getServer(`tasks?per_page=10&page=${page}`, session.access_token)
         setTasks(data.data)
         setPageLinks(data.meta.links)
         setLoading(false)
@@ -139,7 +140,7 @@ const Task = (): JSX.Element => {
                 : (
                     <>
                         <div className="my-1 flex justify-end">
-                            <Button label="Create Task" variant="primary" onClick={() => alert('creating a task')}/>
+                            <TaskModal />
                         </div>
                         <Table columns={columns} data={tasks}/>
                     </>
