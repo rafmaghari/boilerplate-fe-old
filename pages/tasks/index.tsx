@@ -1,15 +1,14 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import AuthLayout from "../../components/Layout/Auth";
 import {getSession} from "next-auth/react";
+import {toast} from "react-toastify";
+
 import HttpServerService from "../../services/http-server.service";
-import {usePagination, useTable} from 'react-table'
+import HttpClientService from "../../services/http-client.service";
 import Button from "../../components/Common/Form/Button";
-import button from "../../components/Common/Form/Button";
 import Spinning from "../../components/Common/Loading/Spinning";
 import TaskModal from "../../components/Common/Modules/Modals/TaskModal";
-import Input from "../../components/Common/Form/Input";
-import HttpClientService from "../../services/http-client.service";
-import {toast} from "react-toastify";
+import Datatable from "../../components/Common/Datatable";
 
 const Task = (): JSX.Element => {
     const [tasks, setTasks] = useState([]);
@@ -23,7 +22,6 @@ const Task = (): JSX.Element => {
     })
     const [isError, setIsError] = useState(false)
     const [errors, setErrors] = useState('')
-    const [formLoading, setFormLoading] = useState(false)
     const {name, description} = form
 
     const fetchTask = useCallback(async (page: number) => {
@@ -45,10 +43,8 @@ const Task = (): JSX.Element => {
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log(form, 'form')
 
         clearForm()
-
         try {
             await HttpClientService.post('tasks', {name:name, description:description})
             await fetchTask(1)
@@ -66,7 +62,6 @@ const Task = (): JSX.Element => {
     const clearForm = () => {
        setErrors('')
        setIsError(false)
-       setFormLoading(false)
     }
 
     const columns = React.useMemo(
@@ -107,79 +102,7 @@ const Task = (): JSX.Element => {
         ],
         []
     )
-    const Table = ({columns, data}: any) => {
-
-        const {
-            getTableProps,
-            getTableBodyProps,
-            headerGroups,
-            // @ts-ignore
-            page,
-            // @ts-ignore
-            nextPage,
-            // @ts-ignore
-            previousPage,
-            // @ts-ignore
-            canNextPage,
-            // @ts-ignore
-            canPreviousPage,
-            // @ts-ignore
-            pageOptions,
-            state,
-            prepareRow
-        } = useTable({columns, data}, usePagination)
-
-        // @ts-ignore
-        const { pageIndex } = state
-
-        return (
-            <div>
-                <table className="min-w-full text-center " {...getTableProps()}>
-                    <thead className="border-b bg-gray-800">
-                    {headerGroups.map((headerGroup, key) => (
-                        <tr {...headerGroup.getHeaderGroupProps()} key={key}>
-                            {headerGroup.headers.map((column, key) => (
-                                <th
-                                    {...column.getHeaderProps()} key={key} className="text-sm font-medium text-white px-6 py-4"
-                                >
-                                    {column.render('Header')}
-                                </th>
-                            ))}
-
-                        </tr>
-                    ))}
-                    </thead>
-                    <tbody {...getTableBodyProps()}>
-                    {page.map((row: any, i: number) => {
-                        prepareRow(row)
-                        return (
-                            <tr {...row.getRowProps()} key={row.id} className="border-b">
-                                {row.cells.map((cell: any, key: number) => {
-                                    return <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                                               {...cell.getCellProps()} key={key}
-                                    >
-                                        {cell.render('Cell')}
-                                    </td>
-                                })}
-                            </tr>
-                        )
-                    })}
-                    </tbody>
-                </table>
-                <div className="flex space-x-1 my-5 justify-end">
-                    {pageLinks && pageLinks.map((page: any, key) => {
-                        return <button onClick={() => fetchTask(page.label)} className="bg-blue-500 text-blue-100 px-2 py-1 rounded" key={key}>
-                            <>{page.label}</>
-                        </button>
-                    })}
-                </div>
-            </div>
-
-        )
-    }
     return (
-        // TODO make component for table
-        // TODO create task function
         // TODO improve table design
         <AuthLayout pageTitle="Tasks" >
             {loading ? <div className="flex justify-center content-center"><Spinning size="w-24 h-24 mt-32" /></div>
@@ -194,10 +117,9 @@ const Task = (): JSX.Element => {
                                 onChange={onChange}
                                 isError={isError}
                                 errors={errors}
-                            >
-                            </TaskModal>
+                            />
                         </div>
-                        <Table columns={columns} data={tasks}/>
+                        <Datatable columns={columns} data={tasks} pageLinks={pageLinks} fetchData={fetchTask}/>
                     </>
                 )
             }

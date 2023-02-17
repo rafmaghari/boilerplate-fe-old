@@ -3,7 +3,6 @@ import Button from "../../Form/Button";
 import Input from "../../Form/Input";
 
 type IProps = {
-    children: any
     showModal: boolean
     closeModal: () => void
     onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
