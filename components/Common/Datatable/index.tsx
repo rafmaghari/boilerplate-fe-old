@@ -36,12 +36,12 @@ const Datatable = ({columns, data, pageLinks, fetchData}: IProps) => {
     return (
         <div>
             <table className="min-w-full text-center " {...getTableProps()}>
-                <thead className="border-b bg-gray-800">
+                <thead className="border-b bg-white text-gray-900">
                 {headerGroups.map((headerGroup, key) => (
                     <tr {...headerGroup.getHeaderGroupProps()} key={key}>
                         {headerGroup.headers.map((column, key) => (
                             <th
-                                {...column.getHeaderProps()} key={key} className="text-sm font-medium text-white px-6 py-4"
+                                {...column.getHeaderProps()} key={key} className="text-sm font-medium px-6 py-6"
                             >
                                 {column.render('Header')}
                             </th>
@@ -69,7 +69,19 @@ const Datatable = ({columns, data, pageLinks, fetchData}: IProps) => {
             </table>
             <div className="flex space-x-1 my-5 justify-end">
                 {pageLinks && pageLinks.map((page: any, key: number) => {
-                    return <button onClick={() => fetchData(page.label)} className="bg-blue-500 text-blue-100 px-2 py-1 rounded" key={key}>
+                    page.label = page.label.includes('Previous') ? 'Previous' : page.label
+                    page.label = page.label.includes('Next') ? 'Next' : page.label
+                    const pageNumber = page.url !== null ? page.url.charAt(page.url.length -1) : null
+                    return <button onClick={() => fetchData(pageNumber)}
+                                   className={`
+                                        text-gray-900 px-2 py-1 rounded text-sm 
+                                         ${page.active && 'bg-blue-600 text-blue-100 font-semibold'}
+                                         ${page.url !== null && 'hover:bg-blue-600 hover:text-blue-100 font-semibold'}
+                                         ${page.url === null && 'bg-gray-100 border-gray-300 text-gray-500'}
+                                   `}
+                                   key={key}
+                                   disabled={page.url === null}
+                           >
                         <>{page.label}</>
                     </button>
                 })}

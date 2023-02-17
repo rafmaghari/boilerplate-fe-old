@@ -60,7 +60,7 @@ const TaskModal = ({showModal, closeModal, onSubmit, onChange, isError, errors}:
                                         >
                                             Close
                                         </button>
-                                        <Button label="Save" variant="primary" buttonType="submit"/>
+                                        <Button  variant="primary" buttonType="submit" size="medium">Save</Button>
                                     </div>
                                 </form>
                             </div>
