@@ -24,7 +24,7 @@ const Task = (): JSX.Element => {
     const [errors, setErrors] = useState('')
     const {name, description} = form
 
-    const fetchTask = useCallback(async (page: number) => {
+    const fetchTask = useCallback(async (page: number =1) => {
         setLoading(true)
         const session = await getSession() as any;
         const {data} = await HttpServerService.getServer(`tasks?per_page=10&page=${page}&sort=-id`, session.access_token)
@@ -34,7 +34,7 @@ const Task = (): JSX.Element => {
     }, [])
 
     useEffect( () => {
-        fetchTask(1).catch(e => console.log(e))
+        fetchTask().catch(e => console.log(e))
     }, []);
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ const Task = (): JSX.Element => {
         clearForm()
         try {
             await HttpClientService.post('tasks', {name:name, description:description})
-            await fetchTask(1)
+            await fetchTask()
             toast('Task Created', { type: 'success' })
             setForm({name: '', description: ''})
             setShowModal(false)
@@ -56,7 +56,20 @@ const Task = (): JSX.Element => {
             setErrors(data.errors)
             setIsError(true)
         }
+    }
 
+    const onDelete = async ({row}: any) => {
+
+        if (window.confirm('Are you sure, you want to delete this task?')) {
+            const id = row.original.id
+            try {
+                await HttpClientService.delete(`tasks/${id}`)
+                await fetchTask()
+            } catch (e:any) {
+                const {statusText} = e.response
+                toast(statusText, { type: 'success' })
+            }
+        }
     }
 
     const clearForm = () => {
@@ -90,7 +103,7 @@ const Task = (): JSX.Element => {
                 Header: 'Action',
                 accessor: "action",
                 Cell: (tableInstance: any) => {
-                    const { row: index } = tableInstance;
+                    const { cell } = tableInstance;
                     return (
                         <div className="flex space-x-1">
                             <Button size="small" variant="secondary" onClick={() => alert('edit')} >
@@ -101,7 +114,7 @@ const Task = (): JSX.Element => {
                                 </svg>
 
                             </Button>
-                            <Button size="small" variant="secondary" onClick={() => alert('delete')} >
+                            <Button size="small" variant="secondary" onClick={() => onDelete(cell)} >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -117,7 +130,6 @@ const Task = (): JSX.Element => {
         []
     )
     return (
-        // TODO improve table design
         <AuthLayout pageTitle="Tasks" >
             {loading ? <div className="flex justify-center content-center"><Spinning size="w-24 h-24 mt-32" /></div>
                 : (
