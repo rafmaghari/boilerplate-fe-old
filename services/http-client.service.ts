@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import { UnauthorizedError } from '../utils/Error'
 import Cookies from "js-cookie";
+import {getSession} from "next-auth/react";
 
 
 class HttpClientService {
@@ -24,9 +25,10 @@ class HttpClientService {
             }
         )
 
-        api.interceptors.request.use((config:AxiosRequestConfig) => {
+        api.interceptors.request.use(async (config:AxiosRequestConfig) => {
             if (!token) {
-                 token = Cookies.get("token");
+                const session = await getSession() as any;
+                token = session.access_token
             }
             if (token && token != "" && config.headers) {
                 config.headers["Authorization"] = `Bearer ${token}`;

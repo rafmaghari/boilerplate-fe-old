@@ -7,16 +7,29 @@ import Button from "../../components/Common/Form/Button";
 import button from "../../components/Common/Form/Button";
 import Spinning from "../../components/Common/Loading/Spinning";
 import TaskModal from "../../components/Common/Modules/Modals/TaskModal";
+import Input from "../../components/Common/Form/Input";
+import HttpClientService from "../../services/http-client.service";
+import {toast} from "react-toastify";
 
 const Task = (): JSX.Element => {
     const [tasks, setTasks] = useState([]);
     const [pageLinks, setPageLinks] = useState([])
     const [loading, setLoading] = useState(false)
+    const [showModal, setShowModal] = useState(false)
+
+    const [form, setForm] = useState({
+        name: '',
+        description: ''
+    })
+    const [isError, setIsError] = useState(false)
+    const [errors, setErrors] = useState('')
+    const [formLoading, setFormLoading] = useState(false)
+    const {name, description} = form
 
     const fetchTask = useCallback(async (page: number) => {
         setLoading(true)
         const session = await getSession() as any;
-        const {data} = await HttpServerService.getServer(`tasks?per_page=10&page=${page}`, session.access_token)
+        const {data} = await HttpServerService.getServer(`tasks?per_page=10&page=${page}&sort=-id`, session.access_token)
         setTasks(data.data)
         setPageLinks(data.meta.links)
         setLoading(false)
@@ -25,6 +38,36 @@ const Task = (): JSX.Element => {
     useEffect( () => {
         fetchTask(1).catch(e => console.log(e))
     }, []);
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({ ...form, [e.target.name]: e.target.value })
+    }
+
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        console.log(form, 'form')
+
+        clearForm()
+
+        try {
+            await HttpClientService.post('tasks', {name:name, description:description})
+            await fetchTask(1)
+            toast('Task Created', { type: 'success' })
+            setForm({name: '', description: ''})
+            setShowModal(false)
+        } catch (e: any) {
+            const {data} = e.response
+            setErrors(data.errors)
+            setIsError(true)
+        }
+
+    }
+
+    const clearForm = () => {
+       setErrors('')
+       setIsError(false)
+       setFormLoading(false)
+    }
 
     const columns = React.useMemo(
         () => [
@@ -135,12 +178,24 @@ const Task = (): JSX.Element => {
         )
     }
     return (
+        // TODO make component for table
+        // TODO create task function
+        // TODO improve table design
         <AuthLayout pageTitle="Tasks" >
             {loading ? <div className="flex justify-center content-center"><Spinning size="w-24 h-24 mt-32" /></div>
                 : (
                     <>
                         <div className="my-1 flex justify-end">
-                            <TaskModal />
+                            <Button label="Create Task" variant="primary" onClick={() => setShowModal(true)}  />
+                            <TaskModal
+                                showModal={showModal}
+                                closeModal={() => setShowModal(false)}
+                                onSubmit={onSubmit}
+                                onChange={onChange}
+                                isError={isError}
+                                errors={errors}
+                            >
+                            </TaskModal>
                         </div>
                         <Table columns={columns} data={tasks}/>
                     </>
