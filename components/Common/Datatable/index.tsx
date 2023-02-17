@@ -54,7 +54,7 @@ const Datatable = ({columns, data, pageLinks, fetchData}: IProps) => {
                 {page.map((row: any, i: number) => {
                     prepareRow(row)
                     return (
-                        <tr {...row.getRowProps()} key={row.id} className="border-b">
+                        <tr {...row.getRowProps()} key={row.id} className="border-b hover:bg-gray-100">
                             {row.cells.map((cell: any, key: number) => {
                                 return <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                                            {...cell.getCellProps()} key={key}

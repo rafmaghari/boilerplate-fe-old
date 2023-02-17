@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Button from "../../Form/Button";
 import Input from "../../Form/Input";
 
@@ -9,9 +9,11 @@ type IProps = {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
     isError: boolean
     errors: string
+    isEditing: boolean
+    form: any
 }
 
-const TaskModal = ({showModal, closeModal, onSubmit, onChange, isError, errors}: IProps) => {
+const TaskModal = ({showModal, closeModal, onSubmit, onChange, isError, errors, isEditing =false, form}: IProps) => {
     return (
         <>
 
@@ -28,7 +30,7 @@ const TaskModal = ({showModal, closeModal, onSubmit, onChange, isError, errors}:
                                 {/*header*/}
                                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                                     <h3 className="text-3xl font-semibold">
-                                       Create Task
+                                        {isEditing ? 'Update': 'Create'} Task
                                     </h3>
                                     <button
                                         className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
@@ -44,10 +46,10 @@ const TaskModal = ({showModal, closeModal, onSubmit, onChange, isError, errors}:
                                     <div className="relative p-6 flex-auto">
                                         <div className="m-2">
                                             <div className="my-2">
-                                                <Input hasError={isError} errors={errors} type="text" name="name" onChange={onChange} label="Name"/>
+                                                <Input value={form.name} hasError={isError} errors={errors} type="text" name="name" onChange={onChange} label="Name"/>
                                             </div>
                                             <div className="my-2">
-                                                <Input hasError={isError} errors={errors} type="text" name="description" onChange={onChange} label="Description"/>
+                                                <Input value={form.description} hasError={isError} errors={errors} type="text" name="description" onChange={onChange} label="Description"/>
                                             </div>
                                         </div>
                                     </div>

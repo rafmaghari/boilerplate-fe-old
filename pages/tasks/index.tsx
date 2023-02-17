@@ -15,6 +15,8 @@ const Task = (): JSX.Element => {
     const [pageLinks, setPageLinks] = useState([])
     const [loading, setLoading] = useState(false)
     const [showModal, setShowModal] = useState(false)
+    const [isEditing, setIsEditing] = useState(false)
+    const [selectedTask, setSelectedTask] = useState(null)
 
     const [form, setForm] = useState({
         name: '',
@@ -46,7 +48,12 @@ const Task = (): JSX.Element => {
 
         clearForm()
         try {
-            await HttpClientService.post('tasks', {name:name, description:description})
+            if (isEditing) {
+                const {id} = selectedTask as any
+                await HttpClientService.put(`tasks/${id}`, {name:name, description:description})
+            } else {
+                await HttpClientService.post('tasks', {name:name, description:description})
+            }
             await fetchTask()
             toast('Task Created', { type: 'success' })
             setForm({name: '', description: ''})
@@ -70,6 +77,14 @@ const Task = (): JSX.Element => {
                 toast(statusText, { type: 'success' })
             }
         }
+    }
+
+    const onEdit = async({row: {original}}: any) => {
+        setSelectedTask(original)
+        setIsEditing(true)
+        setShowModal(true)
+
+        setForm({name: original.name, description: original.description})
     }
 
     const clearForm = () => {
@@ -106,7 +121,7 @@ const Task = (): JSX.Element => {
                     const { cell } = tableInstance;
                     return (
                         <div className="flex space-x-1">
-                            <Button size="small" variant="secondary" onClick={() => alert('edit')} >
+                            <Button size="small" variant="secondary" onClick={() => onEdit(cell)} >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      strokeWidth="1.5" stroke="currentColor" className="w-4 h-4">
                                     <path strokeLinecap="round" strokeLinejoin="round"
@@ -143,6 +158,8 @@ const Task = (): JSX.Element => {
                                 onChange={onChange}
                                 isError={isError}
                                 errors={errors}
+                                isEditing={isEditing}
+                                form={form}
                             />
                         </div>
                         <Datatable columns={columns} data={tasks} pageLinks={pageLinks} fetchData={fetchTask}/>

@@ -54,6 +54,11 @@ class HttpClientService {
         const api = this.api()
         return await api.delete(url)
     }
+
+    public static put = async (url: string, data: any) => {
+        const api = this.api()
+        return await api.put(url, data)
+    }
 }
 
 export default HttpClientService
