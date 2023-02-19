@@ -150,7 +150,10 @@ const Task = (): JSX.Element => {
                 : (
                     <>
                         <div className="my-1 flex justify-end">
-                            <Button variant="primary" onClick={() => setShowModal(true)}>Add Task </Button>
+                            <Button variant="primary" onClick={() => {
+                                setForm({name: '', description: ''})
+                                setShowModal(true)
+                            } }>Add Task </Button>
                             <TaskModal
                                 showModal={showModal}
                                 closeModal={() => setShowModal(false)}
