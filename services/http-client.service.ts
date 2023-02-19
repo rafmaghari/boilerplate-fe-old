@@ -26,10 +26,10 @@ class HttpClientService {
         )
 
         api.interceptors.request.use(async (config:AxiosRequestConfig) => {
-            if (!token) {
-                const session = await getSession() as any;
-                token = session.access_token
-            }
+            // if (!token) {
+            //     const session = await getSession() as any;
+            //     token = session.access_token
+            // }
             if (token && token != "" && config.headers) {
                 config.headers["Authorization"] = `Bearer ${token}`;
             }
